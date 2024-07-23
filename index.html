@@ -84,10 +84,48 @@
         box-shadow: #d6d6e7 0 3px 7px inset;
         transform: translateY(2px);
       }
+
+      #loader-container {
+        position: absolute;
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+        align-items: center;
+        justify-content: center;
+        background-color: aliceblue;
+        z-index: 100;
+      }
+
+      .loader {
+        width: 50px;
+        height: 50px;
+        position: relative;
+      }
+      /* Spinner Animation */
+
+      .spinner {
+        border: 5px solid rgba(0, 0, 0, 0.1);
+        border-top: 5px solid #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
     </style>
   </head>
 
   <body>
+    <div id="loader-container">
+      <div class="loader spinner"></div>
+    </div>
+
     <div id="canvasZone"><canvas id="renderCanvas"></canvas></div>
     <button id="skelleton">Skeleton</button>
     <script>
@@ -297,7 +335,11 @@
             meshes[0].rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
           }
         );
-        let t = 0;
+        scene.onBeforeRenderObservable.add(() => {
+          if (skelleton != null && body != null) {
+            document.getElementById("loader-container").style.display = "none";
+          }
+        });
 
         return scene;
       };
