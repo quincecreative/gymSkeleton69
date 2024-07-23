@@ -335,9 +335,13 @@
             meshes[0].rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
           }
         );
+        let t=0;
         scene.onBeforeRenderObservable.add(() => {
           if (skelleton != null && body != null) {
+            t++;
+            if(t==20){
             document.getElementById("loader-container").style.display = "none";
+              }
           }
         });
 
